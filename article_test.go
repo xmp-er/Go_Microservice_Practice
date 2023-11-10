@@ -20,7 +20,7 @@ func TestShowIndexPageUnauthenticated(t *testing.T){
 
 		//reading the page and checking if there is a title component or not
 		p,err := ioutil.ReadAll(w.Body)
-		pageOK := err ==nil && strings.Index(string p,"<title>Home Page</title>") >0
+		pageOK := err ==nil && strings.Index(string(p),"<title>Home Page</title>") >0
 
 		return statusOK && pageOK
 	})

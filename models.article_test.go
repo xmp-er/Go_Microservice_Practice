@@ -1,7 +1,7 @@
 package main
 import "testing"
 func TestGetAllArticles(t *testing.T){
-	alist := getAllarticles()
+	alist := getAllArticles()
 	if len(alist)!=len(articleList) { //checking for length
 		t.Fail()
 	}

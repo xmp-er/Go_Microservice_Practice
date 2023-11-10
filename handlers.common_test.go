@@ -30,7 +30,7 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 	r.ServeHTTP(w,req)
 
 	if !f(w){
-	  t.fail()
+	  t.Fail()
 	}
 }
 

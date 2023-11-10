@@ -4,35 +4,23 @@ import (
   "net/http"
   "strconv"
   "github.com/gin-gonic/gin"
+  "log"
 )
 func showIndexPage(c *gin.Context) {
   articles := getAllArticles()
-  // Call the HTML method of the Context to render a template
-  c.HTML(
-    // Set the HTTP status to 200 (OK)
-    http.StatusOK,
-    // Use the index.html template
-    "index.html",
-    // Pass the data that the page uses
-    gin.H{
-      "title":   "Home Page",
-      "payload": articles,
-    },
-  )
-
+  render(c,gin.H{
+	  "title":"Home Page",
+	  "payload":articles},"index.html")
 }
 
 func getArticle(c *gin.Context){
+	log.Println("getArticle function was invoked")
 	if articleID,err := strconv.Atoi(c.Param("article_id"));err==nil{
 		if article,err := getArticleById(articleID);err==nil{
-			c.HTML(
-				http.StatusOK,
-				"article.html",
-				gin.H{
-					"title":article.Title,
-					"payload":article,
-				},
-			)
+			render(c,gin.H{
+				"title":"Home Page",
+				"payload":article},"index.html")
+			
 		}else{
 		c.AbortWithError(http.StatusNotFound,err)
 	        }
@@ -40,14 +28,31 @@ func getArticle(c *gin.Context){
 		c.AbortWithStatus(http.StatusNotFound)
 	}
 }
+func render(c *gin.Context, data gin.H, templateName string) {
 
-func render(c *gin.Context, data gin.H, templateName string){
-	switch c.Request.Header.Get("Accept"){
-	case "application/json":
-		c.JSON(http.StatusOK, data["payload"])
-	case "applciation/xml":
+	format:= c.Request.Header.Get("Accept")
+	log.Println(format)
+	if(format=="application/json"){
+		c.JSON(http.StatusOK,data["payload"])
+	}else if(format == "application/xml"){
 		c.XML(http.StatusOK,data["payload"])
-	default:
+	}else{
 		c.HTML(http.StatusOK,templateName,data)
 	}
-}
+
+//	switch c.Request.Header.Get("Accept") {
+//	case "application/json":
+//	  // Respond with JSON
+//	  log.Println("Json method was invoked")
+//	  c.JSON(http.StatusOK, data["payload"])
+//	case "application/xml":
+//	  // Respond with XML
+//	  log.Println("Switch case for application/xml was invoked")
+//	  c.XML(http.StatusOK, data["payload"])
+//	default:
+//	  // Respond with HTML
+//	  log.Println("HTML method invoked")
+//	  c.HTML(http.StatusOK, templateName, data)
+//	}
+  
+  }
