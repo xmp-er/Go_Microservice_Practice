@@ -8,3 +8,5 @@ Uses a static data instead of backend, on running the application,
 - curl -X GET -H "Accept: application/json" http://localhost:8080/ returns articles in JSON format
 - curl -X GET -H "Accept: application/xml" http://localhost:8080/article/view/1 returns a individual article in XML format
 
+References:-
+ - https://semaphoreci.com/community/tutorials/building-go-web-applications-and-microservices-using-gin#h-displaying-a-single-article
